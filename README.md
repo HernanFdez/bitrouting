@@ -57,6 +57,25 @@ On the other hand, a newly connected node interested in being discoverable, woul
 
 In summary, at any point in time, each node would have two routing lists per neighbor (i.e. incoming and outgoing agreed routes), that together constitute the partial local knowledge of the network it possesses and uses to make every routing decision economically optimal. The full network graph (if such a thing even makes any sense in a dynamic network) is nowhere to be found, but more importantly, it's not needed!
 
+## Second Layer
+
+Asynchronous Communication
+
+One important issue yet to address is the fact that, for a node to be part of such a network, it would need to be always available online, since going offline means it could fail to serve a neighbor's request to send a packet to an address included in their agreed routing table (i.e. breaking the contract).
+
+Therefore, not everyone would want to take part in that kind of agreement, which leads naturally to the separation of actors in two distinct layers: ISPs and customers. This may at first sound not that different from the current state of affairs, but the key difference to highlight here is the absence of any central authority needed to go through in order to establish an ISP: it’s just a matter of finding some peer(s) to connect to, and customers interested in connecting through your infrastructure; which should lead to much healthier market competition.
+
+The basic idea is that an ISP could, in a sense, rent to a customer a designated address, that anyone could then use as a packet’s destination in order to send to that customer. This sort of address delegation scheme effectively solves the asynchronous communication problem: whenever an ISP receives a packet intended for a given customer, it first tries to get from it a proper reply to sign and give back to the asking node (peer ISP), but if the customer is not available, it can still send some standard 404 reply, and communicate the event to the customer later when it comes back online. No one has to break any agreement.
+
+One way to handle this last mile forwarding from ISP to customer could be by simply assigning customer-unique addresses. However, this comes with two main drawbacks for a customer:
+
+- It preserves no unique identification when switching ISP
+- It does not benefit from the likely very optimized routes (i.e. higher discoverability and lower amounts) its ISP has managed to generate through large numbers of operations. Instead, each new customer of even an already well known ISP would still go through the slower process of making itself globally known
+
+With this in mind, an arguably better approach (see figure below) would be to encapsulate as encrypted content (only decryptable by the destination ISP) of a first-layer packet, the globally-unique address of the destination customer, together with a second-layer packet with the actual content being sent to it. Likewise, when the receiver customer gives back its second-layer reply, its ISP again encapsulates it inside the content of a first-layer reply to be propagated back to the sender ISP, which would finally hand it to the sender customer.
+
+![packet specs](assets/images/packet-specs.svg)
+
 ## FAQs
 
 ### Would all these sign-verify operations allow for fast enough communications?
