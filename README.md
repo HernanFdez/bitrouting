@@ -72,9 +72,19 @@ One way to handle this last mile forwarding from ISP to customer could be by sim
 - It preserves no unique identification when switching ISP
 - It does not benefit from the likely very optimized routes (i.e. higher discoverability and lower amounts) its ISP has managed to generate through large numbers of operations. Instead, each new customer of even an already well known ISP would still go through the slower process of making itself globally known
 
-With this in mind, an arguably better approach (see figure below) would be to encapsulate as encrypted content (only decryptable by the destination ISP) of a first-layer packet, the globally-unique address of the destination customer, together with a second-layer packet with the actual content being sent to it. Likewise, when the receiver customer gives back its second-layer reply, its ISP again encapsulates it inside the content of a first-layer reply to be propagated back to the sender ISP, which would finally hand it to the sender customer.
+With this in mind, an arguably better approach (see figure below) would be to encapsulate as encrypted content (only decryptable by the destination ISP) of a first-layer packet, the globally-unique customer address of the destination customer, together with a second-layer packet with the actual content being sent to it. Likewise, when the receiver customer gives back its second-layer reply, its ISP again encapsulates it inside the content of a first-layer reply to be propagated back to the sender ISP, which would finally hand it to the sender customer.
 
 ![packet specs](assets/images/packet-specs.svg)
+
+## Decentralized DNS
+
+Tracking Customers' ISPs
+
+Since each customer has a globally-unique customer address, independent of its ISP, this becomes its `name`: finding its full address(es) is just a matter of locating the ISP(s) it is connected to. A customer's ISP(s) could change over time, hence the demand emerges for a service able to provide this real-time info, i.e. a `Name Server`.
+
+Since an NS would also charge some amount for replying to packets sent to it, it is incentivized to provide relyable data. On the other hand, a customer wanting to stay discoverable would also be incentivized to keep some NS(s) updated about its current ISP(s).
+
+Here again, signed packets mean an NS does not need to trust a customer reporting this data. Moreover, it can also regularly check its validity by pinging the relevant customer through the registered ISP(s), again, verifying the signature of the reply.
 
 ## FAQs
 
