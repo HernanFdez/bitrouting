@@ -107,5 +107,6 @@ That's a tough one. Technology-wise, I think a clearly defined protocol and comp
 ## Sources of Inspiration
 
 - _The Bitcoin Standard: The Decentralized Alternative to Central Banking_, by Saifedean Ammous (and Bitcoin in general)
+- The Lightning Network
 - The NOSTR protocol: _Notes and Other Stuff Transmitted by Relay_
 - Many more things I cannot remember now, but probably had some influence
